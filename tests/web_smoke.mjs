@@ -10,9 +10,7 @@ import { renderReport } from "../site/js/report.js";
 const zip = new Uint8Array(readFileSync(new URL("./fixtures/export.zip", import.meta.url)));
 assert.ok(isZip(zip));
 const text = await chatFromZip(zip);
-const lf = (t) => t.replace(/
-/g, "
-"); // exports can use either line ending
+const lf = (t) => t.replace(/\r\n/g, "\n"); // exports can use either line ending
 assert.equal(lf(text), lf(readFileSync(new URL("./fixtures/android_it_12h.txt", import.meta.url), "utf-8")));
 
 const messages = parse(text);
