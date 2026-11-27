@@ -44,7 +44,11 @@ pip install ".[claude]"   # + Claude
 pip install ".[openai]"   # + OpenAI
 ```
 
-Needs Python 3.10+.
+Needs Python 3.10+. Or skip the clone and install a version straight from the [Releases](https://github.com/k0m1d3v/WhatsApp-Chat-Analyzer/releases) page:
+
+```bash
+pip install https://github.com/k0m1d3v/WhatsApp-Chat-Analyzer/releases/download/v2.0.0/wca-2.0.0-py3-none-any.whl
+```
 
 ### Use
 

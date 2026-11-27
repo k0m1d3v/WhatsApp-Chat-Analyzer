@@ -9,3 +9,5 @@ __pycache__/
 chat*.txt
 !examples/*.txt
 !tests/fixtures/*.zip
+dist/
+build/
