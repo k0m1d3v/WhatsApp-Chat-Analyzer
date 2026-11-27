@@ -1,0 +1,10 @@
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+# your chats and reports stay on your machine
+*.zip
+*_wrapped.html
+*_profile_*.html
+chat*.txt
+!examples/*.txt

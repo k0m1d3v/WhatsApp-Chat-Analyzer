@@ -1,0 +1,5 @@
+rich>=13
+emoji>=2.10
+# optional, for --ai claude / --ai openai
+anthropic>=2.14
+openai>=1.51
