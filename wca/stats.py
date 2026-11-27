@@ -202,6 +202,8 @@ def compute(messages: list[Message], top_n: int = 10) -> ChatStats:
     heatmap = [[0] * 24 for _ in range(7)]
     monthly: dict[str, Counter] = defaultdict(Counter)
     per_day: Counter = Counter()
+    all_emojis: Counter = Counter()  # filled in message order, so ties rank the same as in the web version
+    all_words: Counter = Counter()
     conversations = 0
     silence = (timedelta(0), messages[0].ts, messages[0].ts)
 
@@ -238,17 +240,18 @@ def compute(messages: list[Message], top_n: int = 10) -> ChatStats:
         found = [e["emoji"] for e in emoji.emoji_list(m.text)]
         p.emojis += len(found)
         emoji_by[m.sender].update(found)
+        all_emojis.update(found)
         p.laughs += len(LAUGH.findall(m.text)) + sum(found.count(e) for e in ("😂", "🤣", "😆"))
         p.questions += m.text.count("?") > 0
-        words_by[m.sender].update(_words(m.text))
+        words = _words(m.text)
+        words_by[m.sender].update(words)
+        all_words.update(words)
 
     for name, p in people.items():
         p.top_emojis = emoji_by[name].most_common(top_n)
         p.top_words = words_by[name].most_common(top_n)
 
     ranked = sorted(people.values(), key=lambda p: p.messages, reverse=True)
-    all_emojis = sum(emoji_by.values(), Counter())
-    all_words = sum(words_by.values(), Counter())
     days = sorted(per_day)
     busiest = max(per_day.items(), key=lambda kv: kv[1])
     return ChatStats(

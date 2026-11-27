@@ -1,6 +1,10 @@
 # WhatsApp Chat Analyzer
 
-**Your chat, wrapped.** Stats, awards and charts for any WhatsApp chat, in the terminal and as a shareable HTML report, plus an optional AI recap from Claude or OpenAI.
+**Your chat, wrapped.** Stats, awards and charts for any WhatsApp chat, plus an optional AI recap from Claude or OpenAI.
+
+### 👉 [Try it in your browser](https://k0m1d3v.github.io/WhatsApp-Chat-Analyzer/)
+
+Drop your chat export on the page and that's it. The analysis runs entirely in your browser: the chat is never uploaded. There is also a command-line version (below).
 
 ![HTML report: awards, who talks the most, who replies fastest, activity heatmap](docs/report.jpg)
 
@@ -21,7 +25,16 @@
 
 The HTML report is a single file with no external resources. It works offline, follows light/dark mode and shows tooltips on hover.
 
-## Install
+## The website
+
+[k0m1d3v.github.io/WhatsApp-Chat-Analyzer](https://k0m1d3v.github.io/WhatsApp-Chat-Analyzer/) has everything the command line has: Wrapped and Profile modes, time windows, the downloadable report.
+
+- **No uploads.** The page is static (GitHub Pages) and reads your file locally, `.zip` exports included.
+- **AI with your own key.** Paste an Anthropic or OpenAI API key and the request goes straight from your browser to that provider. The page's security policy only lets it connect to those two. The key stays in memory, or in your browser's storage if you tick *Remember my key*.
+
+## Command line
+
+### Install
 
 ```bash
 git clone https://github.com/k0m1d3v/WhatsApp-Chat-Analyzer.git
@@ -33,7 +46,7 @@ pip install ".[openai]"   # + OpenAI
 
 Needs Python 3.10+.
 
-## Use
+### Use
 
 Export a chat from WhatsApp: open the chat → ⋮ / contact name → **Export chat** → **Without media**. Then:
 
@@ -49,7 +62,7 @@ Try it right away on the fictional sample chat:
 wca wrapped examples/sample_chat.txt --open
 ```
 
-### With AI
+#### With AI
 
 ```bash
 export ANTHROPIC_API_KEY=...        # PowerShell: $Env:ANTHROPIC_API_KEY="..."
@@ -69,7 +82,7 @@ Before sending anything, the tool tells you what will be sent and asks you to co
 
 > **Be fair to the people in the chat.** Analyze conversations you are part of, and only send them to an AI provider if the others would be OK with it.
 
-### All options
+#### All options
 
 ```
 wca {wrapped,profile} CHAT [options]
@@ -99,3 +112,10 @@ python examples/make_sample.py   # regenerate the sample chat
 | `wca/terminal.py` | rich terminal output |
 | `wca/report.py` | the HTML report with inline SVG charts |
 | `wca/cli.py` | command line |
+| `site/` | the website: the same parser, stats, report and AI ported to plain JavaScript (no build step) |
+
+`tests/test_web_parity.py` runs the JavaScript version on the same chats (needs Node.js) and checks that every number matches the Python one. To try the site locally: `python -m http.server -d site`, then open http://localhost:8000.
+
+## License
+
+[MIT](LICENSE)

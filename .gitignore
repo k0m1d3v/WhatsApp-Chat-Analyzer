@@ -8,3 +8,4 @@ __pycache__/
 *_profile_*.html
 chat*.txt
 !examples/*.txt
+!tests/fixtures/*.zip

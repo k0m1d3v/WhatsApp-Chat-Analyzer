@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Only this site's own files run, and the only servers the page may talk to are the two AI providers. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.anthropic.com https://api.openai.com; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>WhatsApp Chat Analyzer · your chat, wrapped</title>
+  <meta name="description" content="Stats, awards and charts for any WhatsApp chat. Runs entirely in your browser: your chat is never uploaded.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%AC%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+<main>
+  <section id="start">
+    <h1>Your chat, <span class="accent">wrapped</span>.</h1>
+    <p class="lead">Stats, awards and charts for any WhatsApp chat: who talks the most, who replies fastest, when you chat, your top emojis.</p>
+    <p class="promise">🔒 Everything runs in your browser. Your chat is never uploaded anywhere.</p>
+
+    <label id="drop" class="drop" tabindex="0">
+      <input id="file" type="file" accept=".txt,.zip,text/plain,application/zip" hidden>
+      <span class="drop-icon">📂</span>
+      <b>Drop your chat export here</b>
+      <span>or click to choose the <code>.zip</code> or <code>.txt</code> file</span>
+    </label>
+    <p class="center"><button id="sample" class="link">…or try it with a sample chat</button></p>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <details class="howto">
+      <summary>How do I export a chat?</summary>
+      <ol>
+        <li>Open the chat (or group) in WhatsApp.</li>
+        <li><b>iPhone:</b> tap the name at the top → <i>Export Chat</i>. <b>Android:</b> ⋮ → <i>More</i> → <i>Export chat</i>.</li>
+        <li>Choose <b>Without media</b> and save or send the file to yourself.</li>
+        <li>Drop the <code>.zip</code> (or the <code>.txt</code> inside it) above.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section id="app" hidden>
+    <div class="toolbar">
+      <div class="seg" role="tablist">
+        <button id="mode-wrapped" class="on" role="tab">Wrapped</button>
+        <button id="mode-profile" role="tab">Profile</button>
+      </div>
+      <select id="person" aria-label="Person" hidden></select>
+      <select id="period" aria-label="Time window">
+        <option value="">All time</option>
+        <option value="30d">Last 30 days</option>
+        <option value="3m">Last 3 months</option>
+        <option value="6m">Last 6 months</option>
+        <option value="1y">Last year</option>
+      </select>
+      <span class="spacer"></span>
+      <button id="download" class="btn">⬇ Download report</button>
+      <button id="reset" class="btn ghost">New chat</button>
+    </div>
+
+    <details id="ai-panel" class="ai-panel">
+      <summary>✨ Add an AI recap <span class="muted">(optional, uses your own API key)</span></summary>
+      <div class="ai-grid">
+        <label>Provider
+          <select id="provider">
+            <option value="claude">Claude (Anthropic)</option>
+            <option value="openai">OpenAI</option>
+          </select>
+        </label>
+        <label>API key
+          <input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="sk-…">
+        </label>
+        <label>Model <span class="muted">(optional)</span>
+          <input id="model" type="text" spellcheck="false" placeholder="claude-opus-5-5">
+        </label>
+        <label>Language <span class="muted">(optional)</span>
+          <input id="lang" type="text" placeholder="same as the chat">
+        </label>
+      </div>
+      <label class="check"><input id="anon" type="checkbox" checked> Hide names, phone numbers, emails and links before sending</label>
+      <label class="check"><input id="remember" type="checkbox"> Remember my key on this device</label>
+      <p class="muted small">Your key is only used to call the provider directly from this page; it's never sent anywhere else.
+        Only the most recent ~150,000 characters of the chat are sent. Make sure the people in the chat would be OK with it.</p>
+      <div id="ai-confirm" class="confirm" hidden>
+        <p id="ai-confirm-text"></p>
+        <button id="ai-send" class="btn">Send</button>
+        <button id="ai-cancel" class="btn ghost">Cancel</button>
+      </div>
+      <button id="ai-go" class="btn">Generate</button>
+      <p id="ai-status" class="muted" role="status"></p>
+    </details>
+
+    <div id="report" class="report"></div>
+  </section>
+</main>
+<div id="tip"></div>
+<footer class="site-footer">
+  Open source · <a href="https://github.com/k0m1d3v/WhatsApp-Chat-Analyzer">GitHub</a> · also available as a command-line tool
+</footer>
+</body>
+</html>
