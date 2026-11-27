@@ -215,7 +215,8 @@ def _prompt(task: str, stats: ChatStats, messages: list[Message], budget: int, a
     text, included = transcript(messages, budget, aliases)
     note = "" if included == len(messages) else (
         f"(Only the most recent {included:,} of {len(messages):,} messages fit; the stats cover all of them.)\n")
-    lang = f"Write in {language}." if language else "Write in the main language of the chat."
+    lang = f"Write in {language}." if language else (
+        "Write in the language most messages are written in (judge from the message text, not from names).")
     return (f"{task}\n{lang}\n\n<stats>\n{_stats_brief(stats, aliases)}\n</stats>\n\n"
             f"<transcript>\n{note}{text}\n</transcript>")
 
